@@ -43,9 +43,15 @@ list_t * list_xor(list_t *list1, list_t *list2) {
     if(!list1 || !list2) return 0;
 
     list_t *ret = list_init();
+    uint32_t length;
+    if(list1->length > list2->length) {
+        length = list1->length;
+    } else {
+        length = list2->length;
+    }
 
-    for (uint32_t i = 0; i < list1->length; i++ ) {
-        enqueue(ret, get_Idx(list1, i) ^ get_Idx(list2, i));
+    for (uint32_t i = 0; i < length; i++ ) {
+        enqueue(ret, get_Idx(list1, i % list1->length) ^ get_Idx(list2, i % list2->length));
     }
 
     return ret;
@@ -93,7 +99,7 @@ void print_raw(list_t *list) {
     if(!list) return;
 
     for (uint32_t i = 0; i < list->length; i++) {
-        printf("%X", get_Idx(list, i));
+        printf("%0X", get_Idx(list, i));
     }
     printf("\n");
 }
