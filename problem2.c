@@ -1,5 +1,5 @@
-#include "list.h"
-#include "list_operations.h"
+#include "utils/list.h"
+#include "utils/list_operations.h"
 #include <stdio.h>
 #include <stdlib.h>
 
