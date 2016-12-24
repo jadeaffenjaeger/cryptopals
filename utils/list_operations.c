@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "list_operations.h"
 #include "list.h"
 
 const char base64_arr[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const float letter_freq[] = {8.2, 1.4, 2.8, 4.3, 12.7, 2.2, 2, 6, 7, 0.2, 0.8, 4, 2.4, 6.8, 7.5, 2, 0.01, 6, 6.3, 9, 2.7, 1, 2.4, 0.1, 2, 0.07};
 
 list_t * base64_encode(list_t *list) {
     if(!list) return 0;
@@ -49,6 +51,35 @@ list_t * list_xor(list_t *list1, list_t *list2) {
     return ret;
 }
 
+float score_list(list_t *list) {
+    float score = 0;
+    for (uint32_t i = 0; i < list->length; i++ ) {
+        score += score_char(get_Idx(list, i));
+    }
+    return score;
+}
+
+float score_char(char c) {
+    /*Weird ASCII*/
+    if(c < ' ' || c > '~') return -20;
+
+    /*Spaces:*/
+    if (c == ' ') return 20;
+
+    /*Printable ASCII*/
+    if((c < 'A')|| (c > 'Z' && c < 'a') || (c > 'z')) return 5;
+
+    float score = 5;
+    /*reduce score for uppercase*/
+    if(c >= 'A' && c <= 'Z') {
+        score = 3;
+        c = tolower(c);
+    }
+
+    score *= letter_freq[c - 'a'];
+    return score;
+}
+
 void print_char(list_t *list) {
     if(!list) return;
 
@@ -66,3 +97,4 @@ void print_raw(list_t *list) {
     }
     printf("\n");
 }
+
