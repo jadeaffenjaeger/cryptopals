@@ -18,6 +18,7 @@ list_t * list_init();
 void enqueue(list_t *list, uint8_t value);
 uint8_t dequeue(list_t *list);
 void push(list_t *list, uint8_t value);
+uint8_t get_Idx(list_t *list, uint32_t idx);
 void free_list(list_t *list);
 uint8_t hex_to_int(char c);
 

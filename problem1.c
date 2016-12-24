@@ -1,4 +1,6 @@
-#include "util.h"
+#include "list.h"
+#include "list_operations.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +11,6 @@ int main(int argc, const char *argv[])
     }    
 
     list_t *list = list_init();
-    list_init(list);
 
     for (int i = 0; argv[1][i]; i++) {
         enqueue(list, hex_to_int(argv[1][i]));
