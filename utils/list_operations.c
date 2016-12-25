@@ -57,6 +57,7 @@ list_t * list_xor(list_t *list1, list_t *list2) {
     return ret;
 }
 
+/*return letter score for byte stream*/
 float score_list(list_t *list) {
     float score = 0;
     for (uint32_t i = 0; i < list->length; i++ ) {
@@ -65,6 +66,7 @@ float score_list(list_t *list) {
     return score;
 }
 
+/*score for single char*/
 float score_char(char c) {
     /*Weird ASCII*/
     if(c < ' ' || c > '~') return -20;
@@ -84,6 +86,37 @@ float score_char(char c) {
 
     score *= letter_freq[c - 'a'];
     return score;
+}
+
+uint32_t list_hamming_dist(list_t *list1, list_t *list2) {
+    if(!list1 || !list2) return 0;
+
+    uint32_t length = 0;
+    uint32_t dist = 0;
+
+    if(list1->length > list2->length) {
+        length = list1->length;
+    } else {
+        length = list2->length;
+    }
+
+    for (uint32_t i = 0; i < length; i++ ) {
+        dist += byte_hamming_dist(get_Idx(list1, i), get_Idx(list2, i));
+    }
+
+    return dist;
+}
+
+uint8_t byte_hamming_dist(uint8_t b1, uint8_t b2) {
+    return hamming_weight(b1 ^ b2);
+}
+
+uint8_t hamming_weight(uint8_t val) {
+    uint8_t count = 0;
+    for (int i = 0; i < 8; i++) {
+       if((val >> i) & 1) count++;
+    }
+    return count;
 }
 
 void print_char(list_t *list) {
