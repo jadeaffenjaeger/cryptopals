@@ -59,6 +59,18 @@ void base64_decode_frame(char input[4], uint8_t output[3]) {
     output [2] = c3 << 6 | c4; 
 }
 
+/*Remove all none-base64 chars from list*/
+list_t * base64_clean(list_t *list) {
+    list_t *out = list_init();
+    for (uint8_t i = 0; i < list->length; i++) {
+        char c = (char) get_Idx(list, i);
+        if(c != '\n') enqueue(out, c);
+    }
+    printf("Cleaned:\n");
+    print_char(out);
+    return out;
+}
+
 /*merge two lists into one*/
 list_t * merge(list_t *list1, list_t *list2) {
     if(!list1) return list2;
@@ -181,7 +193,7 @@ uint32_t list_hamming_dist(list_t *list1, list_t *list2) {
     }
 
     for (uint32_t i = 0; i < length; i++ ) {
-        dist += byte_hamming_dist(get_Idx(list1, i), get_Idx(list2, i));
+        dist += byte_hamming_dist(get_Idx(list1, i % list1->length), get_Idx(list2, i % list2->length));
     }
 
     return dist;
