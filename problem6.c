@@ -3,33 +3,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define BUF_LEN 1024
+
 int main(int argc, const char *argv[])
 {
-    if (argc != 3) {
-        printf("Matasano Problem 5; Usage: %s [PLAINTEXT] [KEY]\n", argv[0]);
+    if (argc != 2) {
+        printf("Matasano Problem 6; Usage: %s [FILE]\n", argv[0]);
         return -1;
     }    
 
-    list_t *plaintext = list_init();
-    list_t *key = list_init();
-
-    for (int i = 0; argv[1][i] ; i++) {
-        enqueue(plaintext, argv[1][i]);
+    FILE *fd = fopen(argv[1], "r");
+    char buffer[BUF_LEN];
+    list_t *list = list_init();
+    while (fgets(buffer, BUF_LEN, fd)) {
+        list_t *temp = read_char(buffer);
+        list = merge(list, temp);
     }
 
-    for (int i = 0; argv[2][i]; i++) {
-        enqueue(key, argv[2][i]);
-    }
 
-    printf("Plaintext: ");
-    print_char(plaintext);
+    print_char(list);
+    list_t *test_out = base64_decode(list);
+    printf("Length: %d\n", test_out->length);
+    print_raw(test_out);
 
-    printf("Key: ");
-    print_char(key);
-
-    printf("Hamming Distance: %d\n", list_hamming_dist(plaintext, key));
-
-    free_list(plaintext);
-    free_list(key);
+    /*free_list(test_out);*/
+    free_list(list);
     return 0;
 }
