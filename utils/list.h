@@ -13,6 +13,15 @@ typedef struct {
     uint32_t length;
 } list_t;
 
+typedef struct prio_item_t{
+    struct prio_item_t *next;
+    uint8_t value;
+    float prio;
+} prio_item_t;
+
+typedef struct {
+    prio_item_t *head;
+} prio_list_t;
 
 list_t * list_init();
 void enqueue(list_t *list, uint8_t value);

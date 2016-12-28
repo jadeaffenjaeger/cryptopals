@@ -10,6 +10,32 @@ list_t * list_init() {
     return list;
 }
 
+prio_list_t * prio_list_init() {
+    prio_list_t *list = calloc(1, sizeof(prio_list_t));
+    list->head = 0;
+    return list;
+}
+
+void prio_enqueue(prio_list_t *list, uint8_t value, float prio) {
+    if(!list) return;
+
+    prio_item_t *item = calloc(1, sizeof(prio_item_t));
+    item->value = value;
+    item->prio = prio;
+    if (!list->head) {
+       list->head = item; 
+       return;
+    }
+
+    prio_item_t *temp = list->head;
+    while (temp->prio > item->prio && temp->next) temp = temp->next;
+    
+    item->next = temp->next;
+    
+    
+
+}
+
 void enqueue(list_t *list, uint8_t value) {
     if(!list) return;
 
